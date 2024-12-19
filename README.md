@@ -97,6 +97,7 @@ Technical notes, AD pentest methodology, list of tools, scripts and Windows comm
 ➤ Windows password spray attacks (goal: find accounts protected by an easy guessable password or even a blank password / be careful not to lock accounts)
 ➤ Anonymous access to data storage spaces (e.g. FTP/TFTP/NFS) + Windows clear-text credentials hardcoded in scripts, logs and configuration files 
 ➤ Upload of malicious SCF or URL files to anonymously writable Windows network shares + collect NTLMv2 password hashes + Offline password cracking (tools: John, hashcat)
+➤ Enumerate PXE boot media potentially provided from an SCCM server and then try to retrieve Windows credentials via PXE boot media (tools: pxethiefy, PXEthief)
 ➤ Unpatched/obsolete systems prone to an unauthenticated Remote Code Execution (RCE) vulnerability with a public exploit available
    Examples:
    - Windows: MS17-010 (EternalBlue), CVE-2020-1472 (Zerologon, risky to run in a production environment), old MS08-067, ...
@@ -217,7 +218,7 @@ Technical notes, AD pentest methodology, list of tools, scripts and Windows comm
 ➤ SSH tunnelling using Putty.exe or Plink.exe (e.g. local/remote port forwarding)
 ➤ Remote access tools such as TeamViewer and AnyDesk portable software, Chrome Remote Desktop, VNC, ...
 ➤ Tunneling/pivoting tools like Rpivot, Ligolo, Socat, ...
-➤ Pivoting with TCP tunnelling over HTTP via Webshells (e.g. Pivotnacci, Tunna, Fulcrom, reGeorg and neo-reGeorg webshells/clients)
+➤ Pivoting with TCP tunnelling over HTTP via Webshells (e.g. Neo-reGeorg, Pivotnacci, Tunna, Fulcrom webshells/clients)
 ```
 ```
 3. Privileged accounts hunting
@@ -234,6 +235,7 @@ Technical notes, AD pentest methodology, list of tools, scripts and Windows comm
 ➤ Windows Token impersonation technique
 ➤ RDP session hijacking technique (e.g., using the native Windows command "c:\windows\system32\tscon.exe")
 ➤ Backdooring the Windows start-up folder (e.g., "\\REMOTE-COMPUTER-NAME\C$\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\backdoor.exe")
+➤ Malicious scheduled task that is triggered at log on of any user and executes for instance a script or a C2 agent with its privileges
 ➤ ...
 ```
 -----------------
@@ -263,6 +265,9 @@ Technical notes, AD pentest methodology, list of tools, scripts and Windows comm
    - abusing "no Security Extension" issue - ESC9
    - abusing weak Certificate Mappings - ESC10
    - abusing NTLM relay to ICPR - ESC11
+   - abusing ADCS CA on YubiHSM - ESC12
+   - abusing Issuance Policy - ESC13
+   - abusing EKUwu Application Policies (CVE-2024-49019) - ESC15
 ➤ Compromise an account member of the default security group 'DNSAdmins' and take over the Windows domain by executing a DLL as 'NT AUTHORITY\SYSTEM' on the Domain Controller (known privesc)
 ➤ Compromise an account member of the default security groups 'Backup Operators' or 'Server Operators' and take over the Windows domain by backuping the NTDS.dit file and HKLM\SYSTEM and then extracting the password hash of 'Domain admins' accounts (known privesc)
 ➤ Compromise an account member of the default security group 'Account Operators' that can be used to privesc and take over the Windows domain (known privesc)
