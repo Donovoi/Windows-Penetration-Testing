@@ -208,16 +208,17 @@ Technical notes, AD pentest methodology, list of tools, scripts and Windows comm
 ```
 1. Network lateral movement techniques 
 --------------------------------------
-➤ Network lateral movement using RDP, PowerShell remoting (WinRM), WMIC, WMIexec, SMBexec, PsExec, SSH, ...
-➤ Pass-The-Hash, Pass-The-Ticket, Over-Pass-The-Hash and Pass-The-Certificate techniques 
+➤ Use native Windows commands and protocols such as: RDP, PowerShell Remoting (WinRM), WMIC, PsExec, Windows built-in SSH client & server, etc.
+➤ Use hacking tools such as: Evil-WinRM, NetExec, Impacket framework (e.g., WMIexec, SMBexec), etc.
+➤ Use hacking techniques such as: Pass-The-Hash, Pass-The-Ticket, Over-Pass-The-Hash and Pass-The-Certificate 
 ```
 ```
 2. Network pivoting techniques 
 ------------------------------
 ➤ Use a C2 post-exploitation agent (e.g. Meterpreter, Cobalt Strike, Sliver) + SOCKS proxy + proxychains
 ➤ SSH tunnelling using Putty.exe or Plink.exe (e.g. local/remote port forwarding)
-➤ Remote access tools such as TeamViewer and AnyDesk portable software, Chrome Remote Desktop, VNC, ...
-➤ Tunneling/pivoting tools like Rpivot, Ligolo, Socat, ...
+➤ Remote access tools (RAT) such as TeamViewer and AnyDesk portable software, Chrome Remote Desktop, VNC, ...
+➤ Tunneling/pivoting tools such as Ligolo-ng, Rpivot, Socat, Chisel, ...
 ➤ Pivoting with TCP tunnelling over HTTP via Webshells (e.g. Neo-reGeorg, Pivotnacci, Tunna, Fulcrom webshells/clients)
 ```
 ```
@@ -231,11 +232,13 @@ Technical notes, AD pentest methodology, list of tools, scripts and Windows comm
 ```
 4. Take over privileged accounts (requires local admin priv)
 ------------------------------------------------------------
-➤ Dumping Windows credentials from memory and registry hives
-➤ Windows Token impersonation technique
+➤ Dump Windows credentials of privileged accounts from memory and registry hives + Pass-The-Hash technique
+➤ Use Windows Token impersonation technique to execute arbirary OS commands as another privileged account (victim) also logged on the same Windows server
 ➤ RDP session hijacking technique (e.g., using the native Windows command "c:\windows\system32\tscon.exe")
-➤ Backdooring the Windows start-up folder (e.g., "\\REMOTE-COMPUTER-NAME\C$\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\backdoor.exe")
-➤ Malicious scheduled task that is triggered at log on of any user and executes for instance a script or a C2 agent with its privileges
+➤ Add a malicious script or a malware in the Windows start-up folder of a server to force any privileged users (victims) to run it when they logon
+  (e.g., "\\REMOTE-COMPUTER-NAME\C$\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\malware.exe")
+➤ Create a malicious scheduled task that is triggered at log on of any user and that executes a malicious script with the victim user's privileges
+➤ Modify the registry RUN keys so every time a user logs on the Windows server a malware or a malicious script is run with its privileges
 ➤ ...
 ```
 -----------------
@@ -290,7 +293,7 @@ Technical notes, AD pentest methodology, list of tools, scripts and Windows comm
    - Diskshadow + Secretsdump
    - VSSadmin + Secretsdump
    - Secretsdump
-   - CrackMapExec
+   - NetExec / CrackMapExec (legacy)
    - Mimikatz (dcsync technique)
    - ...
 ➤ Crack (with John or Hashcat) the password hashes of all the Windows domain accounts
@@ -440,7 +443,8 @@ In Red teaming, avoid at all costs using "noisy & easy to detect" pentest tools 
 | Post-Exploitation C2, Network Lateral Movement, Pivoting | Havoc | </br> https://github.com/HavocFramework/Havoc| Havoc is a modern and malleable post-exploitation command and control framework|
 | Post-Exploitation C2, Network Lateral Movement, Pivoting | Covenant | </br> https://github.com/cobbr/Covenant| Covenant is a collaborative .NET C2 framework for red teamers|
 | Network Lateral Movement, Pivoting | Impacket Framework | </br> https://github.com/SecureAuthCorp/impacket | Python offensive security framework (e.g. WMIexec.py, SMBexec.py, Secretsdump.py) |
-| Network Lateral Movement, Pivoting | CrackMapExec | </br> https://github.com/byt3bl33d3r/CrackMapExec | Swiss army knife for pentesting Windows networks|
+| Network Lateral Movement, Pivoting | NetExec | </br> https://github.com/Pennyw0rth/NetExec | Swiss army knife for pentesting Windows networks|
+| Network Lateral Movement, Pivoting | CrackMapExec (legacy)| </br> https://github.com/byt3bl33d3r/CrackMapExec | Swiss army knife for pentesting Windows networks|
 | Network Lateral Movement, Pivoting | SharpMapExec | </br> https://github.com/cube0x0/SharpMapExec | Swiss army knife for pentesting Windows networks |
 | Network Lateral Movement, Pivoting | Powercat | </br> https://github.com/besimorhino/powercat | PowerShell TCP/IP swiss army knife like netcat | 
 | Network Lateral Movement, Pivoting | Invoke-TheHash  | </br> https://github.com/Kevin-Robertson/Invoke-TheHash | It contains PowerShell functions for performing pass-the-hash WMI and SMB tasks |
