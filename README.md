@@ -13,7 +13,7 @@ Technical notes, AD pentest methodology, list of tools, scripts and Windows comm
 - [Step 6. Windows domain compromise (Privilege escalation to become 'Domain Admin' + Persistence)](#STEP-6-WINDOWS-DOMAIN-COMPROMISE-Privilege-escalation-to-become-Domain-Admin--Persistence-)
 - [Step 7. Forest root domain compromise (Privilege escalation to become 'Enterprise Admin')](#STEP-7-FOREST-ROOT-DOMAIN-COMPROMISE-Privilege-escalation-to-become-Enterprise-Admin-)
 - Others
-  - [Defense evasion techniques - Bypassing AV and EDR solutions](#DEFENSE-EVASION-TECHNIQUES---BYPASSING-ANTIVIRUS-AND-EDR-SOLUTIONS)
+  - [Defense evasion techniques - Bypassing AV, EDR and SIEM solutions](#DEFENSE-EVASION-TECHNIQUES---BYPASSING-ANTIVIRUS-EDR-AND-SIEM-SOLUTIONS)
   - [List of useful tools and scripts](#LIST-OF-USEFUL-TOOLS--SCRIPTS)
   - [Useful resources](#USEFUL-RESOURCES)
 
@@ -166,7 +166,7 @@ Technical notes, AD pentest methodology, list of tools, scripts and Windows comm
 -----------------------------------------------------------------------------------------
 ➤ Dumping the registry hives (SAM, SYSTEM, SECURITY)
    Examples:
-   - Reg save
+   - Reg save / Reg export
    - Esentutl.exe
    - Volume Shadow Copy (VSSadmin)
    - SecretsDump (Impacket)
@@ -177,20 +177,17 @@ Technical notes, AD pentest methodology, list of tools, scripts and Windows comm
    Examples:
    - Mimikatz / invoke-mimikatz.ps1
    - NanoDump / invoke-nanodump.ps1
+   - Lsassy
    - SafetyDump
    - PPLBlade
    - SharpKatz
-   - Lsassy
-   - EDRSandblast
-   - OLD/Legacy techniques
-      - ProcDump (Sysinternals tool)
-      - Task manager + "Create dump file" of lsass.exe
-      - Process Explorer (Sysinternals tool) + "Create dump" of lsass.exe
-      - Process Hacker + "Create dump file" of lsass.exe
-      - Dumping lsass with rundll32 and comsvcs.dll
-      - Dumpert
-      - SQLDumper (included with Microsoft SQL) 
-      - WCE (Windows Credentials Editor)
+   - ProcDump (Sysinternals tool)
+   - Task manager + "Create dump file" of lsass.exe
+   - Process Explorer (Sysinternals tool) + "Create dump" of lsass.exe
+   - Process Hacker + "Create dump file" of lsass.exe
+   - Dumping lsass with rundll32 and comsvcs.dll
+   - Dumpert
+   - SQLDumper (included with Microsoft SQL) 
    - ...
 ```
 ```
@@ -319,11 +316,11 @@ Technical notes, AD pentest methodology, list of tools, scripts and Windows comm
 ➤ ...
 ```
 -----------------
-#### DEFENSE EVASION TECHNIQUES - BYPASSING ANTIVIRUS AND EDR SOLUTIONS
-> During penetration tests, it is important to know how to bypass antivirus solutions to be able to identify and exploit vulnerabilities without being blocked.
+#### DEFENSE EVASION TECHNIQUES - BYPASSING ANTIVIRUS, EDR and SIEM SOLUTIONS
+> During penetration tests, it is important to know how to bypass at least antivirus solutions to be able to identify and exploit vulnerabilities without being blocked.
 > 
-> During Red Team exercises (unlike in a penetration test) it is important to be stealthy and thus to know how to bypass EDR products. 
-In Red teaming, avoid at all costs using "noisy & easy to detect" pentest tools (e.g. Mimikatz, Metasploit C2) and techniques (e.g. aggressive and wide network port and vulnerability scans).
+> In general, during Red Team exercises, in addition to assessing the security posture of a company by trying to achieve specific goals (e.g., becoming 'Domain Admin' of the Windows prod environment(s), getting unauthorized access to critical applications, "crown-jewel" data and email boxes of VIP/C-level employees, etc.), we also want to evaluate the effectiveness of the Security Operation Center (SOC) and its detection capabilities. Thus, it is important for red teamers to know to be stealthy and bypass security detection solutions such as AV, EDR, SIEM, IDS/IPS, etc. 
+For instance, in Red teaming, avoid at all costs using "noisy & easy to detect" hacking tools (e.g. Mimikatz, Metasploit C2) and techniques (e.g. aggressive and wide network port and vulnerability scans).
 ```
 1. Common antivirus bypass techniques - With a low privilege account
 --------------------------------------------------------------------
@@ -388,6 +385,18 @@ In Red teaming, avoid at all costs using "noisy & easy to detect" pentest tools 
 ➤ Add a wrong IP address for the EDR appliance/server in the '/etc/hosts' file to prevent the EDR agent to send alerts to the EDR appliance/server
 ➤ Install VirtualBox or VMware Workstation on a compromised Windows laptop/workstation and run hacking tools and scripts inside a VM to avoid detection
 ➤ Modify the registry keys or rename the EDR executable files on a compromised Windows machine and then restart it to disable the EDR software
+➤ ...
+```
+```
+5. Common techniques to bypass SIEM detection use cases / rules (e.g., YARA/SIGMA rules)
+------------------------------------------------------------------------------------------
+➤ Use Windows/Linux OS command obfuscation techniques
+➤ Use in priority less-known tools and command aliases
+➤ Avoid using "one-liner" commands that are easier to catch in event log files
+➤ Copy and rename Windows/Linux native binaries before using them is sometimes sufficient to bypass basic detection
+➤ Detecting activities done with a legitmate Windows IT admin GUI tool is sometimes harder than detecting activities done with a command line tool.
+➤ Modify directly configuration files and/or registry keys instead of running well-known OS commands.
+➤ Instead of creating a new scheduled task or service on a target Windows/Linux server, it is often more stealthy to modify the scritps/binary/Dll that are used by existing scheduled task or service
 ➤ ...
 ```
 -----------------
