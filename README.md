@@ -319,7 +319,7 @@ Technical notes, AD pentest methodology, list of tools, scripts and Windows comm
 #### DEFENSE EVASION TECHNIQUES - BYPASSING ANTIVIRUS, EDR and SIEM SOLUTIONS
 > During penetration tests, it is important to know how to bypass at least antivirus solutions to be able to identify and exploit vulnerabilities without being blocked.
 > 
-> In general, during Red Team exercises, in addition to assessing the security posture of a company by trying to achieve specific goals (e.g., becoming 'Domain Admin' of the Windows prod environment(s), getting unauthorized access to critical applications, "crown-jewel" data and email boxes of VIP/C-level employees, etc.), we also want to evaluate the effectiveness of the Security Operation Center (SOC) and its detection capabilities. Thus, it is important for red teamers to know to be stealthy and bypass security detection solutions such as AV, EDR, SIEM, IDS/IPS, etc. 
+> In general, during Red Team exercises, in addition to assessing the security posture of a company by trying to achieve specific goals (e.g., becoming 'Domain Admin' of the Windows prod environment(s), getting unauthorized access to critical applications, "crown-jewel" data and email boxes of VIP/C-level employees, etc.), we also want to evaluate the effectiveness of the Security Operation Center (SOC) and its detection capabilities. Thus, it is important for red teamers to know how to be stealthy and bypass security detection solutions such as AV, EDR, SIEM, IDS/IPS, etc. 
 For instance, in Red teaming, avoid at all costs using "noisy & easy to detect" hacking tools (e.g. Mimikatz, Metasploit C2) and techniques (e.g. aggressive and wide network port and vulnerability scans).
 ```
 1. Common antivirus bypass techniques - With a low privilege account
@@ -388,15 +388,15 @@ For instance, in Red teaming, avoid at all costs using "noisy & easy to detect" 
 ➤ ...
 ```
 ```
-5. Common techniques to bypass SIEM detection use cases / rules (e.g., YARA/SIGMA rules)
-------------------------------------------------------------------------------------------
+5. Common techniques to bypass SIEM detection use cases / rules (e.g., YARA/SIGMA rules, audit trail based detections)
+---------------------------------------------------------------------------------------------------------------------
 ➤ Use Windows/Linux OS command obfuscation techniques
 ➤ Use in priority less-known tools and command aliases
 ➤ Avoid using "one-liner" commands that are easier to catch in event log files
 ➤ Copy and rename Windows/Linux native binaries before using them is sometimes sufficient to bypass basic detection
-➤ Detecting activities done with a legitmate Windows IT admin GUI tool is sometimes harder than detecting activities done with a command line tool.
-➤ Modify directly configuration files and/or registry keys instead of running well-known OS commands.
-➤ Instead of creating a new scheduled task or service on a target Windows/Linux server, it is often more stealthy to modify the scritps/binary/Dll that are used by existing scheduled task or service
+➤ Modify the scritps/binaries/Dlls that are used by existing scheduled task(s) or service(s) instead of creating a new scheduled task or install a new service
+➤ Modify directly configuration files and/or registry keys instead of running well-known and 'flagged' OS native binaries and commands
+➤ Detecting activities done with a legitmate Windows IT admin GUI tool is sometimes more complex for SOC analysts than detecting activities done with a command line tool
 ➤ ...
 ```
 -----------------
